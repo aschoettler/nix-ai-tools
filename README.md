@@ -28,10 +28,11 @@ This repository uses GitHub Actions to automatically update all packages and fla
 
 #### backlog-md
 
-- **Description**: No description available
-- **Version**: unknown
-- **Source**: unknown
-- **License**: Check package
+- **Description**: Backlog.md - A tool for managing project collaboration between humans and AI Agents in a git ecosystem
+- **Version**: 1.12.1
+- **Source**: source
+- **License**: MIT
+- **Homepage**: https://github.com/MrLesk/Backlog.md
 - **Usage**: `nix run .#backlog-md -- --help`
 
 #### catnip
