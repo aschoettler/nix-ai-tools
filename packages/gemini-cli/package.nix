@@ -1,46 +1,39 @@
 {
   lib,
-  buildNpmPackage,
-  fetchurl,
-  fetchNpmDeps,
-  nodejs_20,
-  runCommand,
   stdenv,
+  fetchurl,
+  makeWrapper,
+  nodejs_20,
 }:
 
 let
-  version = "0.2.2";
-  # First, create a source with package-lock.json included
-  srcWithLock = runCommand "gemini-cli-src-with-lock" { } ''
-    mkdir -p $out
-    tar -xzf ${
-      fetchurl {
-        url = "https://registry.npmjs.org/@google/gemini-cli/-/gemini-cli-${version}.tgz";
-        hash = "sha256-XLoviMM/gJ383D5GSQ2gWsp8P9EhxjQLbgQDmNr9FhI=";
-      }
-    } -C $out --strip-components=1
-    cp ${./package-lock.json} $out/package-lock.json
-  '';
+  # Track upstream GitHub releases (>= 0.4.0)
+  version = "0.5.0-preview-2";
+
+  source = {
+    url = "https://github.com/google-gemini/gemini-cli/releases/download/v${version}/gemini.js";
+    # Placeholder; run update.sh to refresh
+    hash = "sha256-z3ROpOZ+7C+xjQ53dWRcOSwaw8sUZRyv1M9ejQ3mFSQ=";
+  };
 in
-buildNpmPackage rec {
+stdenv.mkDerivation {
   pname = "gemini-cli";
   inherit version;
 
-  src = srcWithLock;
+  src = fetchurl { inherit (source) url hash; };
 
-  npmDeps = fetchNpmDeps {
-    inherit src;
-    hash = "sha256-rH5ISWQMYx4hxKhNzJnoVNYc+qtdB1HrocB5bEGLBwg=";
-  };
+  nativeBuildInputs = [ makeWrapper ];
+  dontUnpack = true;
 
-  # The package from npm is already built
-  dontNpmBuild = true;
+  installPhase = ''
+    runHook preInstall
 
-  # On aarch64-darwin, avoid running install scripts that try to build
-  # optional native deps (node-pty) with node-gyp and fail.
-  npmFlags = lib.optionals (stdenv.isAarch64 && stdenv.isDarwin) [ "--ignore-scripts" ];
+    install -D -m644 "$src" "$out/libexec/gemini-cli/gemini.js"
+    makeWrapper "${nodejs_20}/bin/node" "$out/bin/gemini" \
+      --add-flags "$out/libexec/gemini-cli/gemini.js"
 
-  nodejs = nodejs_20;
+    runHook postInstall
+  '';
 
   passthru = {
     updateScript = ./update.sh;
