@@ -28,11 +28,10 @@ This repository uses GitHub Actions to automatically update all packages and fla
 
 #### backlog-md
 
-- **Description**: Backlog.md - A tool for managing project collaboration between humans and AI Agents in a git ecosystem
-- **Version**: 1.12.1
-- **Source**: source
-- **License**: MIT
-- **Homepage**: https://github.com/MrLesk/Backlog.md
+- **Description**: No description available
+- **Version**: unknown
+- **Source**: unknown
+- **License**: Check package
 - **Usage**: `nix run .#backlog-md -- --help`
 
 #### catnip
@@ -79,6 +78,15 @@ This repository uses GitHub Actions to automatically update all packages and fla
 - **License**: Check package
 - **Homepage**: https://github.com/numtide/nix-ai-tools/tree/main/packages/claudebox
 - **Usage**: `nix run .#claudebox -- --help`
+
+#### coder
+
+- **Description**: Just Every Code CLI (fork of OpenAI Codex) - a coding agent that runs locally
+- **Version**: 0.2.142
+- **Source**: binary
+- **License**: Apache-2.0
+- **Homepage**: https://github.com/just-every/code
+- **Usage**: `nix run .#coder -- --help`
 
 #### codex
 
@@ -160,7 +168,6 @@ This repository uses GitHub Actions to automatically update all packages and fla
 - **License**: Apache-2.0
 - **Homepage**: https://github.com/QwenLM/qwen-code
 - **Usage**: `nix run .#qwen-code -- --help`
-
 <!-- END mdsh -->
 
 ## Installation
